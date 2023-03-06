@@ -10,22 +10,95 @@
 </head>
 
 <body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      background-color: #ccc;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 0px 10px;
+      min-height: 100vh;
+      background-color: #c36767;
+      flex-direction: column;
+    }
+
+    .container_chat {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 80vh;
+      flex-direction: column;
+    }
+
+    .emisor {
+      padding: 20px;
+      background-color: #ccc;
+      text-align: left;
+      width: 100%;
+    }
+
+    .receptor {
+      padding: 20px;
+      background-color: bisque;
+      text-align: right;
+      width: 100%;
+
+    }
+
+    .container_chat_message {
+      display: flex;
+      align-items: center;
+      height: 20vh;
+      flex-direction: column;
+    }
+
+    .container_chat_message_cola {
+      background-color: white;
+      width: 390px;
+      min-height: 20vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 0.9em;
+    }
+  </style>
   <div class="container">
     <h3>Chat</h3>
     <div class="container_chat">
       <div class="container_chat_message">
         <input type="text" class="message" id="messageId">
+        <button onclick="sendMessage()">Enviar</button>
       </div>
-      <button onclick="sendMessage()">Enviar</button>
+      <div class="container_chat_message_cola"></div>
     </div>
-    <h1></h1>
   </div>
   <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
   <script>
     const socket = io("http://localhost:3001")
     socket.on("connection")
-    socket.on("message", (data) => {
-      document.querySelector("h1").innerHTML = data
+    socket.on("message", ({ data, user }) => {
+      let userView = user === "emisor" ? "emisor" : "receptor"
+      const newh1 = document.createElement("h1");
+      newh1.classList.add(userView === "emisor" ? "emisor" : "receptor")
+      newh1.innerHTML = data
+      const containerChat = document.querySelector(".container_chat_message_cola");
+      containerChat.appendChild(newh1)
+
     })
 
 
@@ -34,6 +107,7 @@
       const inputValue = document.querySelector("#messageId");
       const messages = inputValue.value;
       socket.emit("message", messages)
+      inputValue.value = "";
     }
 
 

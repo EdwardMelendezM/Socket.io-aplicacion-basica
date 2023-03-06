@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 html {
-  background-color: #ccc;
+  background-color: #e85d5d;
 }
 .container {
   display: flex;
@@ -13,5 +13,10 @@ html {
   width: 100%;
   margin: 0px 10px;
   min-height: 100vh;
-  background-color: #ccc;
+}
+.emisor {
+  background-color: red;
+}
+.receptor {
+  background-color: blue;
 }
