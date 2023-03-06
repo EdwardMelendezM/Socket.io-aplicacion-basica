@@ -9,8 +9,12 @@ app.get('/home', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log("User connected:", socket.id);
+  socket.on("message", (data) => {
+    socket.broadcast.emit("message", data)
+  })
 });
 
 http.listen(3001, () => {
-  console.log('Servidor iniciado en el puerto 3000');
+  console.log('Servidor iniciado en el puerto 3001');
+
 });
